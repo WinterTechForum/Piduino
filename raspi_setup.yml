@@ -1,0 +1,10 @@
+---
+- name: Install avrdude
+  hosts: localhost
+  sudo: yes
+  tasks:
+    - name: Install avrdude
+      apt:
+        name: avrdude
+        state: present
+        update_cache: yes
