@@ -3,8 +3,17 @@ The unholy matrimony of a Raspberry Pi and an Arduino
 
 ## Raspberry Pi Setup
 
+Append the following lines to the end of your `~/.bashrc`:
+
 ```
-ansible-playbook -i 'localhost,' --connection=local raspi_setup.yml
+export GOPATH=$HOME/Go/
+export PATH=$PATH:$GOPATH/bin
+```
+
+Then run the setup script:
+
+```
+./raspi_setup.sh
 ```
 
 ## Flash the Arduino from Raspberry Pi
