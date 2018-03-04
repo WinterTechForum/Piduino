@@ -4,7 +4,10 @@ set -euo pipefail
 set -x
 
 # Install apt-get packages
-sudo apt-get -y install arduino-core avrdude git golang python2.7 python3
+sudo apt-get -y install arduino-core avrdude git golang python2.7 python3 python3-pip
+
+# Install pipenv
+pip3 install pipenv
 
 # Install arduino-builder and deps
 echo 'Installing Go dependencies for arduino-builder'

@@ -1,0 +1,3 @@
+[submodule "arduino/libraries/nanopb"]
+	path = arduino/libraries/nanopb
+	url = https://github.com/wheeler-microfluidics/arduino-nanopb

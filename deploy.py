@@ -56,6 +56,8 @@ def main(argv=None):
         run('rm -rf {}/{} | true'.format(DEPLOY_DIR, project_name))
         put(args.project_dir, DEPLOY_DIR)
 
+    put(os.path.abspath('arduino/libraries'), DEPLOY_DIR)
+
     with cd(os.path.join(DEPLOY_DIR, project_name)):
         run('mkdir -p build')
         run('pwd; ~/Go/bin/arduino-builder ' \
@@ -63,18 +65,20 @@ def main(argv=None):
                 '--tools {arduino_dir}/hardware/tools/ ' \
                 '--tools {arduino_dir}/tools-builder/ ' \
                 '--libraries {arduino_dir}/libraries/ ' \
+                '--libraries {piduino_dir}/libraries ' \
                 '-fqbn arduino:avr:nano:cpu=atmega328 ' \
                 '--build-path $PWD/build/ ' \
                 '--verbose arduino/arduino.ino'.format(
-                    arduino_dir=ARDUINO_INSTALL_DIR))
+                    arduino_dir=ARDUINO_INSTALL_DIR,
+                    piduino_dir=DEPLOY_DIR))
         sudo('avrdude ' \
                 '-p atmega328p ' \
                 '-C ~/GitHub/Piduino/avrdude_gpio.conf ' \
                 '-c pi_1 -v -U flash:w:build/arduino.ino.hex:i')
-        # sudo('pip install -r py/requirements.txt')
-        # sudo('pip3 install -r py/requirements.txt')
-        run('chmod +x py/main.py')
-        run('./py/main.py')
+
+    with cd(os.path.join(DEPLOY_DIR, project_name, 'pi')):
+        run('pipenv --python 3.5.3 install')
+        run('pipenv run python3 main.py')
 
 
 if __name__ == '__main__':
